@@ -31,3 +31,56 @@ bool detectloop(Node *head)
     }
     return false;
 }
+
+// Floyd cycle detection algo
+
+Node *floydDetectLoop(Node *head)
+{
+    if (head == NULL)
+    {
+        return false;
+    }
+    Node *slow = head;
+    Node *fast = head;
+    while (slow != NULL && fast != NULL)
+    {
+        fast = fast->next;
+        if (fast != NULL)
+        {
+            fast - fast->next;
+        }
+        slow = slow->next;
+        if (slow == fast)
+            return true;
+    }
+    return false;
+}
+
+Node *getStartingNode(Node *head)
+{
+    if (head == NULL)
+    {
+        return NULL;
+    }
+    Node *slow = head;
+    Node *intersection = floydDetectLoop(head);
+    while (slow != intersection)
+    {
+        slow = slow->next;
+        intersection = intersection->next;
+    }
+    return slow;
+}
+
+void removeLoop(Node *head)
+{
+    if (head == NULL)
+        return;
+    Node *startofloop = getStartingNode(head);
+    Node *temp = head;
+    while (temp != startofloop)
+    {
+        temp = temp->next;
+    }
+    temp->next = NULL;
+}
